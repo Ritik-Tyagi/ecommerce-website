@@ -9,7 +9,15 @@ const DataProvider=({children})=>{
     const [user,setUser]=useState({})
     const [searchInp,setSearchInp]=useState("")
     const [searchData,setSearchData]=useState([])
-
-return <ProductData.Provider value={{searchData,setSearchData,products,setProducts,cardDetail,setCardDetail,card,setCard,user,setUser,formData,setFormData,searchInp,setSearchInp}}>{children}</ProductData.Provider> 
+    const [isLoged,setisLoged]=useState(()=>!!localStorage.getItem("userToken"))
+    const login=()=>{
+        setisLoged(true)
+        localStorage.setItem("userToken","123456wiendfck")
+    }
+    const logout=()=>{
+        setisLoged(false)
+        localStorage.removeItem("userToken")
+    }
+return <ProductData.Provider value={{isLoged,login,logout,searchData,setSearchData,products,setProducts,cardDetail,setCardDetail,card,setCard,user,setUser,formData,setFormData,searchInp,setSearchInp}}>{children}</ProductData.Provider> 
 }
 export default DataProvider

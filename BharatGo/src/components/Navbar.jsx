@@ -1,20 +1,24 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import "./Navbar.css"; // ✅ Import CSS
 import { ProductData } from '../ContextApi';
 
 function Navbar() {
-    const { searchInp, setSearchInp,products, searchData,setSearchData } = useContext(ProductData);
+    const { searchInp, setSearchInp,products, searchData,setSearchData,logout } = useContext(ProductData);
     const [menuOpen, setMenuOpen] = useState(false);
     const navigate=useNavigate()
+    const [allproduct,setallproduct]=useState([])
     function SearchHandler(e) {
         setSearchInp(e.target.value.toLowerCase());
     }
-
+    useEffect(()=>{
+        setallproduct(products)
+    },[products])
     async function SearchData(e) {
         e.preventDefault();
-        console.log(searchInp);
-        const data = products.filter((item) => item.title.toLowerCase().includes(searchInp)||item.category?.name?.toLowerCase().includes(searchInp));
+        // console.log(searchInp);
+        let value=searchInp.trim()
+        const data = allproduct.filter((item) => item.title.toLowerCase().includes(value)||item.category.toLowerCase().includes(value)||item.description.toLowerCase().includes(value));
         setSearchData(data);
         navigate("/searchData")
     }
@@ -28,7 +32,7 @@ function Navbar() {
 
                 <div className="search">
                     <input type="search" name="search" id="search-inp" placeholder="Search..." value={searchInp || ""} onChange={SearchHandler} />
-                    <button id="Search-btn" onClick={SearchData}>Search</button>
+                    <button id="Search-btn" onClick={(e)=>SearchData(e)}>Search</button>
                 </div>
 
                 
@@ -37,6 +41,7 @@ function Navbar() {
                     <Link to="/addCart">Cart</Link>
                     <Link to="/Login">Login</Link>
                     <Link to="/Signup">Signup</Link>
+                    <button onClick={()=>logout()} >Logout</button>
                 </div>
 
                 
@@ -54,8 +59,11 @@ function Navbar() {
                     <Link to="/addCart" onClick={() => setMenuOpen(false)}>Cart</Link>
                     <Link to="/Login" onClick={() => setMenuOpen(false)}>Login</Link>
                     <Link to="/Signup" onClick={() => setMenuOpen(false)}>Signup</Link>
+                    <button onClick={()=>logout()} >Logout</button>
                 </div>
             )}
+
+            
         </>
     );
 }

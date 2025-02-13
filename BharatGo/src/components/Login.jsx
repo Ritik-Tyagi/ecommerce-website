@@ -5,7 +5,7 @@ import { ProductData } from '../ContextApi';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
-    const { user, setUser, formData, setFormData } = useContext(ProductData);
+    const { user, setUser, formData,login, setFormData } = useContext(ProductData);
     const navigate=useNavigate()
     function handler(e) {
         const { name, value } = e.target;
@@ -21,8 +21,11 @@ function Login() {
                 e.preventDefault();
                 formData.filter((item)=>{if(item.email===user.email && item.password===user.password){
                     alert("login Successful")
+                    login()
                     navigate("/")
 
+                }else{
+                    alert("Enter valid user email or password")
                 }
             })
             }} className='form'>

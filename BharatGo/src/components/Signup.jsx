@@ -2,9 +2,9 @@ import React, { useContext } from 'react';
 
 import "./Signup.css"  // ✅ Import the new CSS
 import { ProductData } from '../ContextApi';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-function Login() {
+function Signup() {
     const { user, setUser, formData, setFormData } = useContext(ProductData);
     const navigate=useNavigate()
 
@@ -16,7 +16,7 @@ function Login() {
         }));
     }
 
-    return (
+    return (<>
         <div className='signup-container'>
             <form onSubmit={(e) => {
                 e.preventDefault();
@@ -48,8 +48,10 @@ function Login() {
                 
                 <button className='sub-btn'>Submit</button>
             </form>
+            <Link to="/login">Already have an account? Please Login</Link>
         </div>
+    </>
     );
 }
 
-export default Login;
+export default Signup;

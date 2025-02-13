@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { ProductData } from '../ContextApi'
 import { addCard } from './addcard'
+import Navbar from './Navbar'
+import "./search.css"
 
 function Search() {
-    const {searchData,products,setCard}=useContext(ProductData)
+    const {searchData,products,setCard,setCardDetail}=useContext(ProductData)
     const [data,setData]=useState([])
     const [page,setPage]=useState(1)
-    console.log(searchData)
+    // console.log(searchData)
     const paginationArr=[]
      const limit=15
      let pages=Math.ceil(searchData.length/limit)
@@ -19,7 +21,7 @@ function Search() {
         setData(searchData.slice(startInd,lastInd))
     },[page,searchData])
     async function detailHandle(id){ 
-        const res=await fetch(`https://api.escuelajs.co/api/v1/products/${id}`)
+        const res=await fetch(`https://6790dd28af8442fd737812a6.mockapi.io/employee/${id}`)
         const data = await res.json()
         setCardDetail(data)
         // console.log(data)
@@ -31,26 +33,35 @@ function Search() {
     function prevHandler(){
         if(page>1){
           setPage(page-1)
-          console.log(page)
+          // console.log(page)
         }
        }
        function nextHandler(){
         if(page<paginationArr.length){
           setPage(page+1)
-          console.log(page)
+          // console.log(page)
         }
        }
   return (
     <>
     <div>
-    <div className='container'>
+      <Navbar/>
+    <div className='search-container'>
       {data.map((item)=>(
-        <div key={item.id} className="card" onClick={()=>detailHandle(item.id)}>
-        <img src={item.images[0]} alt="img" />
+        <div key={item.id} className="search-card" onClick={()=>detailHandle(item.id)}>
+        <img src={item.image} alt="img" />
+        <div style={{display:"flex",padding:"2px",justifyContent:"end"}}>
+          <span>ratings:</span>
+         <span style={{backgroundColor:"green",color:'white',fontSize:"12px",padding:"2px",borderRadius:"4px"}} >{item.rating.rate} ⭐</span>
+
+        </div>
         <p>{item.title}</p>
-         <h4> $ {item.price}</h4>
+         <h3>Price: ${item.price}</h3>
+         <div className='btn-div'>
+
          <button className='addBtn' onClick={(e)=>addCard(e,item.id,setCard)}>Add Card</button>
          <button className='buyBtn' onClick={()=>alert("buy Successful")}>Buy</button>
+         </div>
         </div>
       ))}
       
