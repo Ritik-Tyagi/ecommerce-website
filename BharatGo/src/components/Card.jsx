@@ -7,7 +7,8 @@ import { useNavigate } from 'react-router-dom';
 function Card() {
     const { card,setCard,setCardDetail } = useContext(ProductData);
     const navigate=useNavigate()
-    function deleteHandle(id){
+    function deleteHandle(e,id){
+        e.stopPropagation()
         setCard(card.filter((item)=>item.id!==id))
     }
     if(card.length===0){
@@ -15,6 +16,7 @@ function Card() {
     }
     async function detailHandle(id){ 
         const res=await fetch(`https://6790dd28af8442fd737812a6.mockapi.io/employee/${id}`)
+       
         const data = await res.json()
         setCardDetail(data)
         // console.log(data)
@@ -36,7 +38,7 @@ function Card() {
                     </div>
                     <p>{item.title}</p>
                     <h4>Price: ${item.price}</h4>
-                    <button onClick={()=>deleteHandle(item.id)}>Delete</button>
+                    <button onClick={(e)=>deleteHandle(e,item.id)}>Delete</button>
                     <button onClick={()=>alert("Buy Successful")}>Buy</button>
                 </div>
             ))}
